@@ -1,66 +1,92 @@
 import pygame
 import random
 
-# Initialize Pygame
 pygame.init()
 
-# Screen dimensions
 WIDTH, HEIGHT = 800, 600
-win = pygame.display.set_mode((WIDTH, HEIGHT))
+window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Simple Hangman Game")
 
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-# Fonts
 FONT = pygame.font.SysFont('comicsans', 40)
 
-# Load images
 images = []
 for i in range(7):
     images.append(pygame.image.load(f"hangman{i}.png"))
 
-# Game variables
-hangman_status = 0
+number = 0
 words = [
-    "astronaut", "bicycle", "cactus", "dinosaur", "elephant", "firework", "giraffe",
-    "hammock", "iceberg", "jellyfish", "kaleidoscope", "lighthouse", "marshmallow",
-    "nightingale", "octopus", "pyramid", "quicksand", "rainbow", "spaceship", "tornado",
-    "umbrella", "volcano", "wizard", "xylophone", "yacht", "zeppelin", "accordion",
-    "butterfly", "carousel", "dandelion", "earring", "flamingo", "goblin", "hedgehog",
-    "igloo", "jigsaw", "kangaroo", "lantern", "mermaid", "noodle", "ostrich", "parachute",
-    "quartz", "rollercoaster", "saxophone", "toadstool", "ukulele", "vampire", "whale",
-    "xenon", "yeti", "zeppelin", "alchemy", "balloon", "cauldron", "drumstick", "enchilada",
-    "fountain", "guitar", "hurricane", "illusion", "jungle", "koala", "leprechaun", "microscope",
-    "nebula", "orchid", "pegasus", "quiver", "robot", "skeleton", "treasure", "unicorn", 
-    "vortex", "whirlpool", "xenophobia", "yo-yo", "zebra", "avalanche", "boomerang", "cavern",
-    "dragon", "eclipse", "frisbee", "galaxy", "hotdog", "iguanodon", "jester", "kazoo", 
-    "llama", "moonbeam", "nymph", "obelisk", "penguin", "quokka", "rainforest", "spacesuit",
-    "alchemy", "balloon", "cauldron", "drumstick", "enchilada", "fountain", "guitar", 
-    "hurricane", "illusion", "jungle", "koala", "leprechaun", "microscope", "nebula", 
-    "orchid", "pegasus", "quiver", "robot", "skeleton", "treasure", "unicorn", "vortex",
-    "whirlpool", "xenophobia", "yo-yo", "zebra", "avalanche", "boomerang", "cavern", "dragon",
-    "eclipse", "frisbee", "galaxy", "hotdog", "iguanodon", "jester", "kazoo", "llama", 
-    "moonbeam", "nymph", "obelisk", "penguin", "quokka", "rainforest", "spacesuit", "bagpipe",
-    "carousel", "dandelion", "earring", "flamingo", "goblin", "hedgehog", "igloo", "jigsaw",
-    "kangaroo", "lantern", "mermaid", "noodle", "ostrich", "parachute", "quartz", "rollercoaster",
-    "saxophone", "toadstool", "ukulele", "vampire", "whale", "xenon", "yeti", "zeppelin",
-    "butterfly", "cauldron", "drumstick", "enchilada", "fountain", "guitar", "hurricane",
-    "illusion", "jungle", "koala", "leprechaun", "microscope", "nebula", "orchid", "pegasus",
-    "quiver", "robot", "skeleton", "treasure", "unicorn", "vortex", "whirlpool", "xenophobia",
-    "yo-yo", "zebra", "avalanche", "boomerang", "cavern", "dragon", "eclipse", "frisbee",
-    "galaxy", "hotdog", "iguanodon", "jester", "kazoo", "llama", "moonbeam", "nymph", "obelisk",
-    "penguin", "quokka", "rainforest", "spacesuit"
+    'apple', 'banana', 'grape', 'orange', 'peach', 'plum', 'pear', 'melon', 'berry', 'cherry',
+    'mango', 'papaya', 'kiwi', 'lemon', 'lime', 'coconut', 'date', 'fig', 'guava', 'apricot',
+    'blackberry', 'blueberry', 'cranberry', 'elderberry', 'gooseberry', 'raspberry', 'strawberry',
+    'watermelon', 'pomegranate', 'nectarine', 'tangerine', 'persimmon', 'passionfruit', 'dragonfruit',
+    'lychee', 'jackfruit', 'durian', 'avocado', 'quince', 'carrot', 'broccoli', 'cabbage', 'cauliflower',
+    'lettuce', 'spinach', 'kale', 'celery', 'cucumber', 'zucchini', 'eggplant', 'bellpepper', 'chili',
+    'onion', 'garlic', 'ginger', 'radish', 'beetroot', 'potato', 'tomato', 'pumpkin', 'squash', 'yam',
+    'computer', 'laptop', 'keyboard', 'monitor', 'printer', 'mouse', 'tablet', 'smartphone', 'headphones',
+    'router', 'modem', 'scanner', 'webcam', 'microphone', 'joystick', 'projector', 'speaker', 'screen',
+    'desktop', 'network', 'software', 'hardware', 'database', 'internet', 'website', 'browser', 'application',
+    'program', 'code', 'algorithm', 'function', 'variable', 'constant', 'loop', 'conditional', 'array',
+    'list', 'dictionary', 'tuple', 'string', 'integer', 'float', 'boolean', 'class', 'object', 'method',
+    'module', 'library', 'framework', 'syntax', 'debug', 'compile', 'execute', 'integrate', 'automate',
+    'optimize', 'develop', 'design', 'test', 'deploy', 'maintain', 'refactor', 'document', 'review',
+    'collaborate', 'innovate', 'analyze', 'simulate', 'model', 'visualize', 'predict', 'classify', 'cluster',
+    'regress', 'correlate', 'normalize', 'scale', 'standardize', 'transform', 'extract', 'load', 'store',
+    'retrieve', 'backup', 'restore', 'encrypt', 'decrypt', 'secure', 'authenticate', 'authorize', 'protect',
+    'defend', 'detect', 'monitor', 'report', 'alert', 'respond', 'recover', 'simulate', 'forecast', 'visualize',
+    'interpret', 'quantify', 'measure', 'estimate', 'calibrate', 'analyze', 'model', 'optimize', 'simulate',
+    'predict', 'visualize', 'verify', 'validate', 'test', 'debug', 'document', 'train', 'evaluate', 'tune',
+    'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate', 'manage', 'lead',
+    'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore', 'discover',
+    'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
+    'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
+    'discover', 'invent', 'design', 'create', 'build', 'construct'
 ]
 
-word = random.choice(words)
+word = random.choice(words).upper()  # Convert the word to uppercase to match with guessed letters
 guessed = []
 
 def draw():
-    win.fill(WHITE)
+    window.fill(WHITE)
     
-    # Draw word with underscores for unguessed letters
+    # Display the word with guessed letters
     display_word = ""
     for letter in word:
         if letter in guessed:
@@ -68,26 +94,29 @@ def draw():
         else:
             display_word += "_ "
     text = FONT.render(display_word, 1, BLACK)
-    win.blit(text, (400, 200))
+    window.blit(text, (400, 200))
     
-    # Draw hangman image
-    win.blit(images[hangman_status], (150, 100))
+    # Display the hangman image
+    window.blit(images[number], (150, 100))
+    
+    # Display the guessed letters
+    guessed_text = FONT.render("Guessed: " + ", ".join(guessed), 1, BLACK)
+    window.blit(guessed_text, (400, 300))
+    
     pygame.display.update()
 
 def display_message(message):
     pygame.time.delay(1000)
-    win.fill(WHITE)
+    window.fill(WHITE)
     text = FONT.render(message, 1, BLACK)
-    win.blit(text, (WIDTH/2 - text.get_width()/2, HEIGHT/2 - text.get_height()/2))
+    window.blit(text, (WIDTH/2 - text.get_width()/2, HEIGHT/2 - text.get_height()/2))
     
-    # Display the chosen word
     word_text = FONT.render(f"The word was: {word}", 1, BLACK)
-    win.blit(word_text, (WIDTH/2 - word_text.get_width()/2, HEIGHT/2 - word_text.get_height()/2 + 50))
+    window.blit(word_text, (WIDTH/2 - word_text.get_width()/2, HEIGHT/2 - word_text.get_height()/2 + 50))
     
     pygame.display.update()
     pygame.time.delay(3000)
 
-# Main loop
 FPS = 60
 clock = pygame.time.Clock()
 run = True
@@ -103,7 +132,7 @@ while run:
             if letter.isalpha() and letter not in guessed:
                 guessed.append(letter)
                 if letter not in word:
-                    hangman_status += 1
+                    number += 1
 
     draw()
 
@@ -117,7 +146,7 @@ while run:
         display_message("YOU WON!")
         break
 
-    if hangman_status == 6:
+    if number == 6:
         display_message("YOU LOST!")
         break
 
