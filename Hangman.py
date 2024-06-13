@@ -1,13 +1,14 @@
 import pygame
 import random
 
+
 pygame.init()
 
-WIDTH, HEIGHT = 800, 600
+WIDTH = 900
+HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Simple Hangman Game")
+pygame.display.set_caption("Hangman Game")
 
-# Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
@@ -16,9 +17,8 @@ FONT = pygame.font.SysFont('comicsans', 40)
 images = []
 for i in range(7):
     images.append(pygame.image.load(f"hangman{i}.png"))
-
-number = 0
-words = [
+    
+dictionary = [
     'apple', 'banana', 'grape', 'orange', 'peach', 'plum', 'pear', 'melon', 'berry', 'cherry',
     'mango', 'papaya', 'kiwi', 'lemon', 'lime', 'coconut', 'date', 'fig', 'guava', 'apricot',
     'blackberry', 'blueberry', 'cranberry', 'elderberry', 'gooseberry', 'raspberry', 'strawberry',
@@ -75,33 +75,32 @@ words = [
     'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
     'discover', 'invent', 'design', 'create', 'build', 'construct', 'assemble', 'manufacture', 'produce', 'develop',
     'test', 'validate', 'verify', 'analyze', 'optimize', 'simulate', 'model', 'predict', 'visualize', 'document',
-    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'automate', 'integrate', 'collaborate',
+    'train', 'evaluate', 'tune', 'deploy', 'maintain', 'improve', 'innovate', 'akutomate', 'integrate', 'collaborate',
     'manage', 'lead', 'coach', 'mentor', 'support', 'advise', 'consult', 'teach', 'learn', 'research', 'explore',
     'discover', 'invent', 'design', 'create', 'build', 'construct'
 ]
 
-word = random.choice(words).upper()  # Convert the word to uppercase to match with guessed letters
+word = random.choice(dictionary)
+word = word.upper() 
+
 guessed = []
 
 def draw():
     window.fill(WHITE)
     
-    # Display the word with guessed letters
-    display_word = ""
+    display = ""
     for letter in word:
         if letter in guessed:
-            display_word += letter + " "
+            display += letter + " "
         else:
-            display_word += "_ "
-    text = FONT.render(display_word, 1, BLACK)
+            display += "_ "
+    text = FONT.render(display, 1, BLACK)
     window.blit(text, (400, 200))
     
-    # Display the hangman image
     window.blit(images[number], (150, 100))
     
-    # Display the guessed letters
-    guessed_text = FONT.render("Guessed: " + ", ".join(guessed), 1, BLACK)
-    window.blit(guessed_text, (400, 300))
+    guess = FONT.render("Guessed: " + ", ".join(guessed), 1, BLACK)
+    window.blit(guess, (100, 300))
     
     pygame.display.update()
 
@@ -115,11 +114,13 @@ def display_message(message):
     window.blit(word_text, (WIDTH/2 - word_text.get_width()/2, HEIGHT/2 - word_text.get_height()/2 + 50))
     
     pygame.display.update()
-    pygame.time.delay(3000)
+    pygame.time.delay(1000)
 
 FPS = 60
 clock = pygame.time.Clock()
 run = True
+
+number = 0
 
 while run:
     clock.tick(FPS)
@@ -144,6 +145,7 @@ while run:
 
     if won:
         display_message("YOU WON!")
+        print("winnier")
         break
 
     if number == 6:
