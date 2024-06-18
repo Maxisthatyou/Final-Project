@@ -114,7 +114,7 @@ def display_message(message):
     window.blit(word_text, (WIDTH/2 - word_text.get_width()/2, HEIGHT/2 - word_text.get_height()/2 + 50))
     
     pygame.display.update()
-    pygame.time.delay(1000)
+    pygame.time.delay(3000)
 
 FPS = 60
 clock = pygame.time.Clock()

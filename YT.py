@@ -1,14 +1,23 @@
 from pytube import YouTube
 
-def Download(link):
-    youtubeObject = YouTube(link)
-    youtubeObject = youtubeObject.streams.get_highest_resolution()
+def download_youtube_video(url, path):
     try:
-        youtubeObject.download()
-    except:
-        print("An error has occurred")
-    print("Download is completed successfully")
 
+        yt = YouTube(url)
 
-link = input("Enter the YouTube video URL: ")
-Download(link)
+        stream = yt.streams.get_highest_resolution()
+
+        stream.download(output_path=path)
+        
+        print(f"Downloaded: {yt.title}")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+
+    video_url = input("Enter the URL of the YouTube video: ")
+    
+    save_path = input("Enter the path to save the downloaded video (e.g., /path/to/download/folder): ")
+    
+    download_youtube_video(video_url, save_path)
